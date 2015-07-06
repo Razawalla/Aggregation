@@ -14,6 +14,7 @@ public class AggregateMain implements ActionListener {
 	
 	JPanel cards;
 	JFrame main;
+	JButton view,enter;
 	
 	public AggregateMain() {
 		// TODO Auto-generated constructor stub
@@ -22,8 +23,8 @@ public class AggregateMain implements ActionListener {
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 		main.setBounds(dim.width/2-250, dim.height/2-250, 500, 500);
 		main.setResizable(false);
-		JButton view=new JButton("View");
-		JButton enter=new JButton("Enter");
+		view=new JButton("View");
+		enter=new JButton("Enter");
 		Container container=main.getContentPane();
 		container.setSize(500,500);
 		container.setLayout(new FlowLayout());
@@ -32,6 +33,7 @@ public class AggregateMain implements ActionListener {
 		container.add(view);
 		container.add(enter);
 		view.addActionListener(this);
+		enter.addActionListener(this);
 		main.setVisible(true);
 	}
 
@@ -51,8 +53,16 @@ public class AggregateMain implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		ViewDetails details=new ViewDetails();
-		details.setVisible(true);
+		if(e.getSource()==view){
+		PasswordFrame pf=new PasswordFrame("view");	
+		//ViewDetails details=new ViewDetails();
+		//details.setVisible(true);
+		pf.setVisible(true);
+		}
+		else if(e.getSource()==enter){
+			EnterDetails details=new EnterDetails();
+			details.setVisible(true);
+		}
 		main.setVisible(false);
 	}
 

@@ -75,6 +75,9 @@ public class PasswordFrame extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		if(e.getSource()==register){
 			System.out.println("register clicked");
+			Register reg=new Register();
+			reg.setVisible(true);
+			this.setVisible(false);
 		}
 		else if(e.getSource()==login){
 			System.out.println("login clicked");

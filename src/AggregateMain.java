@@ -54,10 +54,10 @@ public class AggregateMain implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==view){
-		PasswordFrame pf=new PasswordFrame("view");	
-		//ViewDetails details=new ViewDetails();
-		//details.setVisible(true);
-		pf.setVisible(true);
+		//PasswordFrame pf=new PasswordFrame("view");	
+		ViewDetails details=new ViewDetails();
+		details.setVisible(true);
+		//pf.setVisible(true);
 		}
 		else if(e.getSource()==enter){
 			EnterDetails details=new EnterDetails();

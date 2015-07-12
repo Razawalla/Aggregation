@@ -3,19 +3,27 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.mysql.jdbc.PreparedStatement;
+
 
 public class SqlAccess {
 	private Connection connect=null;
 	private Statement statement=null;
 	private ResultSet result=null;
 	
-	public ResultSet readDatabase()throws Exception{
+	public SqlAccess() {
+		// TODO Auto-generated constructor stub
 		try{
-			System.out.println("came to readDatabase");
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			connect=DriverManager.getConnection("jdbc:mysql://localhost:3306/marks?","root","5686");
-			if(connect!=null)
-				System.out.println("party");
+		}catch(Exception e){
+			System.out.println("got exception"+e);
+			}
+	}
+	
+	public ResultSet readDatabase()throws Exception{
+		System.out.println("came to readDatabase");
 			statement=connect.createStatement();
 			 result=statement.executeQuery("select * from marks.student");
 			 System.out.println(result.getMetaData().getTableName(1));
@@ -23,10 +31,18 @@ public class SqlAccess {
 					System.out.println(result.getMetaData().getColumnName(i));
 				}
 				return result;
-		}catch(Exception e){
-			System.out.println("got exception"+e);
-			throw e;
-		}
+		
+		
+	}
+	
+	public void insertData(String roll,String name,String subject,String marks )throws Exception{
+		String sql="insert into student (roll,name,subject,marks)"+"values(?,?,?,?)";
+		PreparedStatement preparedStatement=(PreparedStatement) connect.prepareStatement(sql);
+		preparedStatement.setInt(1, Integer.parseInt(roll));
+		preparedStatement.setString(2, name);
+		preparedStatement.setString(3, subject);
+		preparedStatement.setInt(4, Integer.parseInt(marks));
+		preparedStatement.executeUpdate();
 		
 	}
 

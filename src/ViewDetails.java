@@ -23,7 +23,7 @@ class ViewDetails extends JFrame
 
 private void getView() {
 	// TODO Auto-generated method stub
-	String[] columNames={"Roll Number","Name","Subject","Total"};
+	String[] columNames={"Roll Number","Name","Total"};
 	
 	SqlAccess access=new SqlAccess();
 	  try{
@@ -38,27 +38,26 @@ private void getView() {
 			  Object[][] data=new Object[15][15];
 			  int i=0,j=0;
 			  while(result.next()){
-				  while(j<4){
+				  j=0;
+				  while(j<3){
 					  data[i][j]=result.getString("roll");
 					  System.out.println(result.getString("roll"));
 					  j++;
 					  data[i][j]=result.getString("name");
 					  j++;
 					  System.out.println(result.getString("name"));
-					  data[i][j]=result.getInt("subject");
+					  ResultSet avg=access.getAvg((String)data[i][j-2]);
+					  while(avg.next())
+					  data[i][j]=avg.getFloat("avg(marks)");
+					  
 					  j++;
-					  System.out.println(result.getString("subject"));
-					  data[i][j]=result.getString("marks");
-					  j++;
-					  System.out.println(result.getString("marks"));
-				  }
+					  }
 				  i++;
 			  }
 			  JTable table=new JTable(data,columNames);
 			  table.setEnabled(false);
 			  table.setCellSelectionEnabled(true);
 			  add(new JScrollPane(table));
-			  System.out.println(result.getString("roll"));
 			  access.close();
 		  }
 		  }catch(Exception e){

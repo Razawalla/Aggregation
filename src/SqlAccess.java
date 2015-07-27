@@ -28,6 +28,7 @@ public class SqlAccess {
 			statement=connect.createStatement();
 			 result=statement.executeQuery("select * from marks.student group by roll");
 			 
+			 
 			return result;
 		
 		
@@ -76,6 +77,29 @@ public class SqlAccess {
 		}
 		
 		return null;
+	}
+	
+	public ResultSet getSum(String roll){
+		try {
+			String query="select sum(marks) from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where roll=?)";
+			PreparedStatement prep=(PreparedStatement)connect.prepareStatement(query);
+			prep.setInt(1, Integer.parseInt(roll));
+			ResultSet res=prep.executeQuery();
+			
+			return res;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public ResultSet getAnything(String query) throws SQLException{
+		statement=connect.createStatement();
+		 result=statement.executeQuery(query);
+		return result;
+		
 	}
 
 	public void close() {

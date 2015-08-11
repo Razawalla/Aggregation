@@ -96,9 +96,65 @@ public class SqlAccess {
 	}
 	
 	public ResultSet getAnything(String query) throws SQLException{
-		statement=connect.createStatement();
-		 result=statement.executeQuery(query);
-		return result;
+		String args[]=query.split(" ");
+		for(int i=0;i<args.length;i++)
+		System.out.println(args[i]);
+		String selectArgs[]=args[1].split(",");
+		for(int i=0;i<selectArgs.length;i++)
+			System.out.println(selectArgs[i]);
+		String whereArgs[]=query.split("=");
+		
+		System.out.println(whereArgs[1]);
+		String condition[]=whereArgs[0].split(" ");
+		System.out.println(condition[condition.length-1]);
+		if(condition[condition.length-1].equals("name")){
+			String roll=new String();
+			statement=connect.createStatement();
+			result=statement.executeQuery("select roll from student where name="+"'"+whereArgs[1]+"'");
+			while(result.next())
+				roll=result.getString("roll");
+			System.out.println(roll);
+			String toRetrieve="select "+"t0."+selectArgs[0];
+			int k=1;
+			for(int i=0;i<selectArgs.length;i++){
+				if(selectArgs[i].contains("(")){
+					statement=connect.createStatement();
+					result=statement.executeQuery("select "+selectArgs[i]+" from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where roll="+roll+")");
+					while(result.next())
+						System.out.println(result.getString(1));
+				}
+				else{
+					System.out.println("came to else");
+					statement=connect.createStatement();
+					result=statement.executeQuery("select "+selectArgs[i]+" from student where name=");
+					while(result.next()){
+						System.out.println(result.getString(1));
+					}
+				}
+				
+			}
+			
+			
+		}
+		else if(condition[condition.length-1].equals("roll")){
+			for(int i=0;i<selectArgs.length;i++){
+				if(selectArgs[i].contains("(")){
+					statement=connect.createStatement();
+					result=statement.executeQuery("select "+selectArgs[i]+" from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where roll="+whereArgs[1]+")");
+					while(result.next())
+						System.out.println(result.getString(1));
+				}
+				
+				}
+			
+		}
+		
+		
+		
+		
+		 
+		return null;
+	
 		
 	}
 

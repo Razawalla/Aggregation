@@ -14,10 +14,11 @@ public Query() {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setResizable(false);
 	Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-	setBounds((int)d.getWidth()/2-250,(int) d.getHeight()/2-150, 500, 300);
-	JTextField query=new JTextField();
+	setBounds((int)d.getWidth()/2-250,(int) d.getHeight()/2-250, 500, 500);
+	JTextField selectFields=new JTextField();
 	getContentPane().setLayout(null);
-	query.setBounds(50, 5, 400, 50);
+	selectFields.setBounds(50, 5, 400,50);
+	
 	JButton execute,viewAll;
 	execute=new JButton("Execute");
 	execute.setBounds(50, 100, 100, 50);
@@ -25,13 +26,13 @@ public Query() {
 	viewAll.setBounds(350, 100, 100, 50);
 	add(execute);
 	add(viewAll);
-	add(query);
+	add(selectFields);
 	execute.addActionListener(new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			ViewDetails details=new ViewDetails(query.getText());
+			ViewDetails details=new ViewDetails(selectFields.getText());
 			details.setVisible(true);
 			setVisible(false);
 		}

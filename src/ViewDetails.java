@@ -36,7 +36,7 @@ private void getView(String query) {
 	ArrayList<String> columnames=new ArrayList<String>();
 	try {
 	ResultSet result=access.getAnything(query);
-	
+		if(result!=null){
 		ResultSetMetaData meta=(ResultSetMetaData) result.getMetaData();
 		int count=meta.getColumnCount();
 		Object[][] data=new Object[100][100];
@@ -59,6 +59,7 @@ private void getView(String query) {
 		}
 		JTable table=new JTable(data,columnames.toArray());
 		add(new JScrollPane(table));
+		}
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

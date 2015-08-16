@@ -37,12 +37,12 @@ public class SqlAccess {
 	public void insertData(String roll,String name,String subject,String marks )throws Exception{
 		Crypt crypt=new Crypt(Integer.parseInt(marks));
 		statement=connect.createStatement();
-		result=statement.executeQuery("select hash from marks.roll_to_hash where roll="+roll+" limit 1");
+		result=statement.executeQuery("select hash from marks.roll_to_hash where hash_roll="+roll+" limit 1");
 		if(result.absolute(1)){
 			//connect.close();
 		}
 		else{
-			String insert="insert into roll_to_hash(roll,hash)"+"values(?,?)";
+			String insert="insert into roll_to_hash(hash_roll,hash)"+"values(?,?)";
 			PreparedStatement p=(PreparedStatement)connect.prepareStatement(insert);
 			p.setInt(1, Integer.parseInt(roll));
 			p.setInt(2, roll.hashCode());
@@ -55,7 +55,7 @@ public class SqlAccess {
 		preparedStatement.setString(3, subject);
 		preparedStatement.setBytes(4, Crypt.encrypt(Crypt.raw, marks.getBytes()));
 		preparedStatement.executeUpdate();
-		sql="insert into hashmap(roll_hash,subject,marks)"+"values(?,?,?)";
+		sql="insert into hashmap(roll_hash,hash_subject,marks)"+"values(?,?,?)";
 		preparedStatement=(PreparedStatement)connect.prepareStatement(sql);
 		preparedStatement.setInt(1,roll.hashCode());
 		preparedStatement.setString(2, subject);
@@ -65,7 +65,7 @@ public class SqlAccess {
 	
 	public ResultSet getAvg(String roll){
 		try {
-			String query="select avg(marks) from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where roll=?)";
+			String query="select avg(marks) from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where hash_roll=?)";
 			PreparedStatement prep=(PreparedStatement)connect.prepareStatement(query);
 			prep.setInt(1, Integer.parseInt(roll));
 			ResultSet res=prep.executeQuery();
@@ -81,7 +81,7 @@ public class SqlAccess {
 	
 	public ResultSet getSum(String roll){
 		try {
-			String query="select sum(marks) from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where roll=?)";
+			String query="select sum(marks) from marks.hashmap where roll_hash=(select hash from marks.roll_to_hash where hash_roll=?)";
 			PreparedStatement prep=(PreparedStatement)connect.prepareStatement(query);
 			prep.setInt(1, Integer.parseInt(roll));
 			ResultSet res=prep.executeQuery();
@@ -106,7 +106,12 @@ public class SqlAccess {
 			result=statement.executeQuery(query);
 			return result;
 		}
-		return null;
+		else{
+			statement=connect.createStatement();
+			result=statement.executeQuery(query);
+			return result;
+		}
+		
 		}
 
 	public void close() {
